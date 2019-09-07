@@ -25,9 +25,7 @@ sudo systemctl start rpcbind.service
 sudo systemctl enable libvirtd --now
 
 # configure libvirtd default storage location
-sudo virsh pool-destroy default
-sudo virsh pool-undefine default
-sudo virsh pool-define-as --name default --type dir --target /openstack
+sudo virsh pool-define-as --name default --type dir --target /mnt
 sudo virsh pool-autostart default
 sudo virsh pool-start default
 
@@ -75,9 +73,13 @@ sudo virsh net-define /tmp/temp2.xml
 sudo virsh net-start default
 sudo virsh net-autostart default
 
-virt-install --name security_onion --cdrom /opt/securityOnion/securityonion-16.04.6.1.iso --graphics spice --graphics vnc --vcpus 4 --ram 8192 --os-type linux --os-variant ubuntu16.04 --disk size=50,format=raw,sparse=true --network network=default --network network=external
+systemctl restart network
 
-ssh onions@192.168.138.200
+cd /
+curl -LO http://releases.ubuntu.com/18.04.3/ubuntu-18.04.3-live-server-amd64.iso
+
+virt-install --name ubuntu_router --cdrom ubuntu-18.04.3-live-server-amd64.iso --graphics spice --graphics vnc --vcpus 4 --ram 8192 --os-type linux --os-variant ubuntu18.04 --disk size=50,format=raw,sparse=true --network network=default --network network=external
+
 # Switch /etc/network/interfaces OPENSTACK_IFACE from manual to static
 # And assign address, gateway, netmask
 
@@ -115,14 +117,17 @@ iptables -A FORWARD -i $INTERNET_IFACE -o $OPENSTACK_IFACE -m state --state RELA
 
 exit # securityOnion vm
 
+cd /root
+
+
 # Vagrant setup virtual machines
-vagrant up
+# vagrant up
 
 vagrant destroy -f; for _ in 1 2; do for i in operator compute0 compute1 control0 control1 control2; do vagrant up --provision $i; done; done
 
 vagrant ssh operator
 # Grab your customized inventory file and globals.yml
-scp server@192.168.138.200:/home/server/res/* ~/
+scp root@192.168.1.149:/root/res/* ~/
 sudo su
 # export REGISTRY_PORT=4000
 # export REGISTRY_URL="operator"
@@ -210,3 +215,9 @@ kolla-ansible post-deploy
 . /etc/kolla/admin-openrc.sh
 
 bash init-runonce
+
+
+
+#KILL MEM CACHE (as root) echo 3 > /proc/sys/vm/drop_caches
+
+To view in my windows machine. 

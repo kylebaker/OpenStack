@@ -197,3 +197,12 @@ do
   # Remove empty directories (will error out if not empty)
   rmdir $i
 done
+
+###
+# configuring nvme drive
+###
+
+mkfs.ext4 /dev/nvme0n1
+mkdir /mnt
+echo "/dev/nvme0n1 /mnt ext4 defaults 0 0" >> /etc/fstab
+
