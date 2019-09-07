@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-yum install gcc -y || exit 1
