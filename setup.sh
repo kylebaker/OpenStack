@@ -59,7 +59,7 @@ function install_done {
 
 ### SCRIPT STARTS HERE ###
 
-### Check to see if you are
+### Check to see if you are root
 
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
@@ -86,8 +86,8 @@ stall_dns
 
 if [[ ! -f /root/reboot1-check ]]; then {
   # Setup networking
-  log $EXEC_DIR/reboot1/teaming.sh "$LAN_ADDR/24" $GATEWAY $MAC_ADDRS
-  sleep 7
+  # log $EXEC_DIR/reboot1/teaming.sh "$LAN_ADDR/24" $GATEWAY $MAC_ADDRS
+  # sleep 7
   stall_dns
   install_packages reboot1
   # Configure the machine
@@ -111,30 +111,5 @@ EOF
   systemctl enable persist.service
 
   done_status reboot1-check
-}
-elif [[ ! -f /root/reboot2-check ]]; then {
-  stall_dns
-  install_packages reboot2
-  ( # Install SoftEther VPN
-  log $EXEC_DIR/reboot2/softether_vpn.sh
-  # Install and configure ZFS On Linux 0.8.1
-  log $EXEC_DIR/reboot2/zfs.sh $ZFS_EMAIL $NORMAL_USER $ZPOOL_NAME
-  # Install snapper
-  log $EXEC_DIR/reboot2/snapper.sh
-  # Install CPU Temp Limit
-  log $EXEC_DIR/reboot2/temp_limit.sh
-  # Setup email notification on any system (pam) login
-  log $EXEC_DIR/reboot2/email_sys_login.sh $SYS_LOGIN_EMAIL
-  # install dracut-ssh
-  log $EXEC_DIR/reboot2/dracut_ssh.sh $DRACUT_SSH_PORT $GRUB_CFG
-  # Download Security Onion
-  log $EXEC_DIR/reboot2/security_onion.sh
-  # # install aide
-  # log $EXEC_DIR/reboot2/aide.sh $AUDIT_EMAIL
-
-  until [[ $(diff /tmp/running/ /tmp/completed/ | wc -l) -eq '0' ]]; do sleep 1; set +x; done
-  set -x
-
-  install_done reboot2-check ) &> ~/logs/main.log
 }
 fi
