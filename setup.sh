@@ -112,4 +112,14 @@ EOF
 
   done_status reboot1-check
 }
+elif [[ ! -f /root/reboot2-check ]]; then {
+  stall_dns
+  install_packages reboot2
+
+  until [[ $(diff /tmp/running/ /tmp/completed/ | wc -l) -eq '0' ]]; do sleep 1; set +x; done
+  set -x
+
+  install_done reboot2-check ) &> ~/logs/main.log
+}
+
 fi
