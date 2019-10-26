@@ -116,6 +116,6 @@ elif [[ ! -f /root/reboot2-check ]]; then {
   stall_dns
   install_packages reboot2
 }
-}
+
 
 fi
