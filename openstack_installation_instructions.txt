@@ -40,7 +40,7 @@ IPV6INIT="no"
 IPV6_AUTOCONF="no"
 EOF
 
-
+sudo yum install cockpit-machines -y
 
 ###
 # Using GUI cause easier
