@@ -24,8 +24,9 @@ sudo systemctl start nfs-server
 sudo systemctl start rpcbind.service
 sudo systemctl enable libvirtd --now
 
+#SKIP THIS changes location of VM
 # configure libvirtd default storage location
-sudo virsh pool-define-as --name default --type dir --target /mnt
+sudo virsh pool-define-as --name default --type dir --target /home
 sudo virsh pool-autostart default
 sudo virsh pool-start default
 
@@ -42,7 +43,8 @@ EOF
 
 
 ###
-# Create bridge on team0 interface named: external0
+# Using GUI cause easier
+# Create bridge on lan interface (in cockpit) named: external0
 ###
 
 

@@ -88,10 +88,10 @@ awk -F: '{print $1}' /etc/passwd | grep -v root > /etc/at.deny
 # Secure mount options
 ###
 
-mv /etc/fstab /etc/fstab.bak
-echo "# <file system>     <mount point>  <type>  <options>  <dump>  <pass>" > /etc/fstab
-echo "tmpfs /tmp tmpfs defaults,nosuid,nodev,noexec 0 0" >> /etc/fstab
-egrep -v '#|^$' /etc/fstab.bak >> /etc/fstab
+#mv /etc/fstab /etc/fstab.bak
+#echo "# <file system>     <mount point>  <type>  <options>  <dump>  <pass>" > /etc/fstab
+#echo "tmpfs /tmp tmpfs defaults,nosuid,nodev,noexec 0 0" >> /etc/fstab
+#egrep -v '#|^$' /etc/fstab.bak >> /etc/fstab
 
 ###
 # Sysctl values
@@ -202,7 +202,7 @@ done
 # configuring nvme drive
 ###
 
-mkfs.ext4 /dev/nvme0n1
-mkdir /mnt
-echo "/dev/nvme0n1 /mnt ext4 defaults 0 0" >> /etc/fstab
+#mkfs.ext4 /dev/nvme0n1
+#mkdir /mnt
+#echo "/dev/nvme0n1 /mnt ext4 defaults 0 0" >> /etc/fstab
 
