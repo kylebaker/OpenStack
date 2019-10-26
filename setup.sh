@@ -115,8 +115,6 @@ EOF
 elif [[ ! -f /root/reboot2-check ]]; then {
   stall_dns
   install_packages reboot2
-
-  install_done reboot2-check ) &> ~/logs/main.log
 }
 }
 
