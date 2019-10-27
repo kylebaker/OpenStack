@@ -85,6 +85,8 @@ virt-install --name ubuntu_router --cdrom ubuntu-18.04.3-live-server-amd64.iso -
 # Switch /etc/network/interfaces OPENSTACK_IFACE from manual to static
 # And assign address, gateway, netmask
 
+#SSH INTO ROUTER VM
+
 export INTERNET_IFACE='ens4'
 export OPENSTACK_IFACE='ens3'
 export OPENSTACK_EXT_ROUTER='10.4.4.1'
@@ -117,7 +119,7 @@ iptables -t nat -A POSTROUTING -o $INTERNET_IFACE -j MASQUERADE
 iptables -A FORWARD -i $OPENSTACK_IFACE -o $INTERNET_IFACE -j ACCEPT
 iptables -A FORWARD -i $INTERNET_IFACE -o $OPENSTACK_IFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
 
-exit # securityOnion vm
+exit # DONE WITH ROUTER VM
 
 cd /root
 
@@ -223,3 +225,5 @@ bash init-runonce
 #KILL MEM CACHE (as root) echo 3 > /proc/sys/vm/drop_caches
 
 To view in my windows machine. 
+
+On win machine: route add 10.4.4.0 MASK 255.255.255.0 192.168.8.156 
